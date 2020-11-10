@@ -35,7 +35,7 @@ class StorageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -48,13 +48,11 @@ class StorageController extends Controller
     {
         $user = User::findOrFail($u_id);
         if($this->oneOrMoreStorage($user)){
-            $storage = $this->getStorages($user);
-            return view('storages.show',compact('storage'));
-            // return Inertia::render('Storage/Show.vue',['storage' => $storage] );
+            $storages = $this->getPrimaryStorages($user);
+            return view('home',compact('storages'));
         }else {
-            $storages = $this->getStorages($user);
-            return view('storages.index',compact('storages'));
-            // return Inertia::render('Storage/Index.vue', ['storages' => $storages]);
+            $storages = $this->getAllStorages($user);
+            return $storages;
         }
       
     }
@@ -96,8 +94,9 @@ class StorageController extends Controller
     public function storageCount(User $user) {
         static $count;
         foreach($user->storages as $storage) {
-            if(strpos($storage->storage_type,"backup"))
-            {$count--;}
+            if($storage->type == "backup"){
+                $count--;
+            }
             $count++;
         }
         // dd($count);
@@ -112,11 +111,21 @@ class StorageController extends Controller
         else return false;
     }
 
-    public function getStorages(User $user) {
+    public function getAllStorages(User $user) {
         static $storages;
         foreach($user->storages as $storage) {
             $storages[] = $storage;
         }
         return $storages;
     }
+    public function getPrimaryStorages(User $user) {
+        static $storages;
+        foreach($user->storages as $storage) {
+            if($storage->type == "primary") {
+                $storages[] = $storage;
+            }
+        }
+        return $storages;
+    }
+
 }

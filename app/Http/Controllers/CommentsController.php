@@ -14,7 +14,8 @@ class CommentsController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Coments::all();
+        return $comments;
     }
 
     /**
@@ -24,7 +25,7 @@ class CommentsController extends Controller
      */
     public function create()
     {
-        //
+        return view('comments.create');
     }
 
     /**
@@ -35,7 +36,13 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request()->validate([    
+            'folder_id' =>  ['required','integer'],
+            'user_id'   =>  ['required','integer'],
+            'text'      =>  ['required','text'],
+        ]);
+        Comments::create($attributes);
+        return \redirect()->route('comments.index')->with('success','Comment created successfully.');
     }
 
     /**
@@ -46,7 +53,7 @@ class CommentsController extends Controller
      */
     public function show(Comments $comments)
     {
-        //
+        return view('comments.show',compact('comments'));
     }
 
     /**
@@ -57,7 +64,7 @@ class CommentsController extends Controller
      */
     public function edit(Comments $comments)
     {
-        //
+        return view('comment.edit',compact('comments'));
     }
 
     /**
@@ -69,7 +76,14 @@ class CommentsController extends Controller
      */
     public function update(Request $request, Comments $comments)
     {
-        //
+        $attributes = $request()->validate([    
+            'folder_id' =>  ['required','integer'],
+            'user_id'   =>  ['required','integer'],
+            'text'      =>  ['required','text'],
+        ]);
+        $comments->folder_id = $attributes['folder_id'];
+        $comments->user_id = $attributes['user_id'];
+        $comments->text =   $attributes['text'];
     }
 
     /**
@@ -80,6 +94,6 @@ class CommentsController extends Controller
      */
     public function destroy(Comments $comments)
     {
-        //
+        $comments->destory();
     }
 }
