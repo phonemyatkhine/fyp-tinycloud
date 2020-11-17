@@ -49,6 +49,7 @@ class StorageController extends Controller
         $user = User::findOrFail($u_id);
         if($this->oneOrMoreStorage($user)){
             $storages = $this->getPrimaryStorages($user);
+            session('storage',$storages);
             return view('home',compact('storages'));
         }else {
             $storages = $this->getAllStorages($user);

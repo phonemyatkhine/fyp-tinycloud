@@ -23,6 +23,9 @@ use App\Http\Controllers\StoredDataController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login',function(){
+
+});
 
 Route::resource('/collaborators',CollaboratorsController::class);
 Route::resource('/comments',CommentsController::class);

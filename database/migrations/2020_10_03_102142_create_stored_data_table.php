@@ -17,6 +17,7 @@ class CreateStoredDataTable extends Migration
             $table->id();
             $table->foreignId('folder_id');
             $table->string('name');
+            $table->string('path');
             $table->integer('size');
             $table->string('type');
             $table->timestamps();
