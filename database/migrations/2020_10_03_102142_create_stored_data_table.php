@@ -16,6 +16,7 @@ class CreateStoredDataTable extends Migration
         Schema::create('stored_data', function (Blueprint $table) {
             $table->id();
             $table->foreignId('folder_id');
+            $table->string('name');
             $table->string('path');
             $table->integer('size');
             $table->string('type');

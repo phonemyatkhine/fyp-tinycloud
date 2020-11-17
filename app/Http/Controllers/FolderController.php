@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Folder;
+use App\Models\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class FolderController extends Controller
 {
@@ -14,7 +17,8 @@ class FolderController extends Controller
      */
     public function index()
     {
-        //
+        $folders = Folder::all();
+        return $folder;   
     }
 
     /**
@@ -22,9 +26,10 @@ class FolderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Storage $storage)
     {
-        //
+        session(['storage' => $storage]);
+        return view('folders.create');
     }
 
     /**
@@ -35,7 +40,16 @@ class FolderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $storage = session('storage');
+        $attributes = $request->validate([
+            'name'   =>  ['required','string'],
+            'privacy'   => ['required']
+        ]);
+        $attributes['storage_id'] = $storage->id;
+        $path = md5($request->name.'_u'.Auth::id().'_t'.time().'_d'.date('dmyy'));
+        $attributes['path'] = $storage->path.'/'.$path;
+        $folder = Folder::create($attributes);
+        return \redirect()->route('storages.index')->with('success','Folder created successfully.');
     }
 
     /**
@@ -46,7 +60,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {
-        //
+        return view('folders.show',compact('folder'));
     }
 
     /**
@@ -57,7 +71,7 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder)
     {
-        //
+        return view('folders.edit',compact('folder'));
     }
 
     /**
@@ -69,7 +83,17 @@ class FolderController extends Controller
      */
     public function update(Request $request, Folder $folder)
     {
-        //
+        $attributes = $request()->validate([
+            'storage_id' =>  ['required','integer'],
+            'name'   =>  ['required','string'],
+            'path'  =>  ['required','string'],
+            'privacy'   => ['required']
+        ]);
+        $folder->storage_id = $attributes['storage_id'];
+        $folder->name = $attributes['name'];
+        $folder->path = $attributes['path'];
+        $folder->privacy = $attributes['privacy'];
+        return \redirect()->route('folders.index')->with('success','Folder created successfully.');
     }
 
     /**
@@ -80,6 +104,14 @@ class FolderController extends Controller
      */
     public function destroy(Folder $folder)
     {
-        //
+        $folder->delete();
+    }
+    public function indexFoldersOfStorage(Storage $storage)
+    {
+        dd($storage->folders);
+    }
+    public function createFolderOfStorage(Storage $storage) 
+    {
+
     }
 }
