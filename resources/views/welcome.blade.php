@@ -3,7 +3,7 @@
     <div class="col-lg-6 column cover-left">
         <h3>Secure Cloud Storage for your data.</h3>
         <p>File storage and sharing made easy.</p>
-        <a href="{{url('looco')}}">
+        <a href="{{url('register')}}">
             <button type="button" class="btn btn-primary start-btn">Get Started</button>
         </a>
     </div>

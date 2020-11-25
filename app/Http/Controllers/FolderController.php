@@ -15,10 +15,16 @@ class FolderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct() 
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
-        $folders = Folder::all();
-        return $folder;   
+        $storage = session('storage');
+        $chart_data = session('chart_data');
+        $folders = Folder::where('storage_id',$storage->id)->get();
+        return view('folders.index',compact('folders','storage','chart_data'));   
     }
 
     /**
@@ -49,7 +55,7 @@ class FolderController extends Controller
         $path = md5($request->name.'_u'.Auth::id().'_t'.time().'_d'.date('dmyy'));
         $attributes['path'] = $storage->path.'/'.$path;
         $folder = Folder::create($attributes);
-        return \redirect()->route('storages.index')->with('success','Folder created successfully.');
+        return \redirect()->route('folder.index')->with('success','Folder created successfully.');
     }
 
     /**
@@ -95,7 +101,12 @@ class FolderController extends Controller
         $folder->privacy = $attributes['privacy'];
         return \redirect()->route('folders.index')->with('success','Folder created successfully.');
     }
-
+    public function sharedFolders() 
+    {
+        $chart_data = session('chart_data');
+        $storage = session('storage');
+        return view('folders.index',compact('chart_data','storage'));
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -1,7 +1,18 @@
 @extends('layouts.app')
 @section('content')
         Folder Name : {{$folder->name}} <br>
-        Folder Items : {{$folder->stored_data}} <br>
+        Folder Items : 
+        @foreach ($folder->stored_data as $stored_data)
+        {{-- {{$stored_data->id}} --}}
+        <div>
+            <a href="ftp://192.168.100.8/{{$stored_data->path}}">{{$stored_data->name}}</a> 
+            <form action="{{route('data.destroy',$stored_data->id)}}" method="POST">
+                @method("DELETE")
+                @csrf
+                <input type="submit" name="" value="Delete" id="">
+            </form>
+        </div>
+        @endforeach <br>
         Folder Privacy : {{$folder->privacy}}  <br>
         Delete Folder : 
         <form action="{{route('folders.destroy',$folder->id)}}" method="POST">

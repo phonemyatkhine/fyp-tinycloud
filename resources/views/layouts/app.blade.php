@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Tiny Cloud</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,11 +28,21 @@
                 }
                 .cover-left{
                     padding: 200px;
-                    padding-left : 90px;
+                    padding-left : 120px;
                 }
                 .navbar {
                     padding-left:80px;
                 }
+                .navbar-nav>a>span {
+                    display:inline-block;
+                    border-bottom:2px solid #1577FF;
+                    padding-bottom:2px; 
+                    width: 90%;
+                }
+                .dropdown {
+                    margin-left: 30%;
+                }
+               
            } 
            @media only screen and (max-width: 600px) {
                 .cover {
@@ -53,6 +63,15 @@
                 .footer>p{
                     font-size: 10px;
                 }
+                .navbar-nav>a>span {
+                    display:inline-block;
+                    border-bottom:2px solid #1577FF;
+                    padding-bottom:2px; 
+                    width: 8%;
+                }
+                .dropdown {
+                    margin-left: -15px;
+                }
            }
            /* .active {
                 text-decoration: underline;
@@ -63,11 +82,6 @@
            }
            .navbar-brand {
                font-size: 1.5em;
-           }
-           .nav-underline {
-            display:inline-block;
-            border-bottom:2px solid #1577FF;
-            padding-bottom:2px;
            }
            
            .start-btn {
@@ -87,6 +101,9 @@
            }
             html, body {
                 height: 100%;
+                width: 100%;
+                overflow-x: hidden;
+                margin-right: 0px;
             }
             body {
                 display: flex;
@@ -98,25 +115,69 @@
             .footer {
                 flex-shrink: 0;
             }
+            .dropdown>a{
+                color:black;
+            }
         </style>
+        @yield('css')
     </head>
-    <body class="antialiased font">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="#">Tiny Cloud</a>
+    <body class="font">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <a class="navbar-brand" href="{{ route('welcome') }}">Tiny Cloud</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#"><span class="nav-underline">  Home </span><span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#">Features</a>
-                    <a class="nav-item nav-link" href="#">Pricing</a>
-                    <a class="nav-item nav-link" href="#">About</a>
+                    @if (Auth::user())
+                        <a class="nav-item nav-link {{ request()->is('/') ? 'active' :  ' ' }}" href="{{route('welcome')}}">
+                            @if(request()->is('/'))
+                                <span class="nav-underline">  Home </span><span class="sr-only">(current)</span>
+                            @else Home
+                            @endif
+                        </a>
+                        <a class="nav-item nav-link {{ request()->is('storages*') ? ' active' :  ' ' }}" href="{{route('storages.index')}}">
+                            @if(request()->is('storages*')) 
+                                <span class="nav-underline"> Storages </span> 
+                            @else Storages
+                            @endif
+                        </a>
+                        <a class="nav-item nav-link" href="#">Help</a>
+                    @elseif(!Auth::user())
+                        <a class="nav-item nav-link {{ request()->is('/') ? 'active' :  ' ' }}" href="{{route('welcome')}}">
+                            @if(request()->is('/'))
+                                <span class="nav-underline">  Home </span><span class="sr-only">(current)</span>
+                            @else Home
+                            @endif
+                        </a>
+                        <a class="nav-item nav-link" href="#">Features</a>
+                        <a class="nav-item nav-link" href="#">Packages</a>
+                        <a class="nav-item nav-link" href="#">About</a> 
+                        <a href="{{route('login')}}" class="nav-item nav-link">Login</a>
+                    @endif 
+                </div>
+                @if (Auth::user())
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{Auth::user()->email}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <form action="{{route('logout')}}" class="dropdown-item" method="POST">
+                            @csrf
+                            <input type="submit" name="" id="" value="Logout" style="all: unset">
+                        </form>
+                    </div>
+                </div>
+                @endif
+               
+                <div>
+                    
                 </div>
             </div>
         </nav>
         {{-- content --}}
-        <div class="container-fluid row content">
+        <div class="row content">
             @yield('content')
         </div>
         {{-- content --}}

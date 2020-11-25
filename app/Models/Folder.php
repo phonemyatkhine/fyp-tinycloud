@@ -20,4 +20,7 @@ class Folder extends Model
     public function stored_data () {
         return $this->hasMany('App\Models\StoredData');
     }
+    public function storage() {
+        return $this->belongsTo('App\Models\Storage');
+    }
 }

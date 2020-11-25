@@ -10,10 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class StorageController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth');
+    }
     public function index()
     {   
         if(Auth::check()){
-            return redirect('storages/'.Auth::id());
+            $user = Auth::user();
+            $storages = $this->getPrimaryStorages($user);
+            if($this->oneOrMoreStorage($user)){
+                return redirect('storages/'.$storages[0]->id);
+            } else {
+                $storages = $this->getPrimaryStorages($user);
+                return view('storages.index',compact('storages'));
+            }
         } else {
             return redirect('dashboard');
         }
@@ -44,18 +54,31 @@ class StorageController extends Controller
      * @param  \App\Models\Storage  $storage
      * @return \Illuminate\Http\Response
      */
-    public function show($u_id)
+    public function show(Storage $storage)
     {
-        $user = User::findOrFail($u_id);
-        if($this->oneOrMoreStorage($user)){
-            $storages = $this->getPrimaryStorages($user);
-            session('storage',$storages);
-            return view('home',compact('storages'));
-        }else {
-            $storages = $this->getAllStorages($user);
-            return $storages;
+        static $stored_data;
+        $user = Auth::user();
+        if($user->can('view',$storage)) {
+            session(['storage'=>$storage]);
+            // dd(session('storage'));
+            $folders = $storage->folders;
+            foreach($folders as $folder ) {
+                $stored_data[] = $folder->stored_data;
+            }
+            $free_space = $storage->total_space - $storage->used_space;
+            $chart_data =[
+                ['Space','Number'],
+                ['Free Space in MB' , round($free_space/1048576,2)],
+                ['Used Space in MB' , round($storage->used_space/1048576,2)]
+            ];
+            $chart_data = json_encode($chart_data);
+            session(['chart_data'=>$chart_data]);
+            // return($chart_data);
+            // dd($stored_data);
+            return view('storages.show',compact('storage','chart_data'));
+        } else {
+            dd("dont view");
         }
-      
     }
 
     /**
