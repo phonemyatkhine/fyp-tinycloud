@@ -34,7 +34,7 @@ class FolderController extends Controller
      */
     public function create(Storage $storage)
     {
-        session(['storage' => $storage]);
+        // session(['storage' => $storage]);
         return view('folders.create');
     }
 
@@ -55,7 +55,7 @@ class FolderController extends Controller
         $path = md5($request->name.'_u'.Auth::id().'_t'.time().'_d'.date('dmyy'));
         $attributes['path'] = $storage->path.'/'.$path;
         $folder = Folder::create($attributes);
-        return \redirect()->route('folder.index')->with('success','Folder created successfully.');
+        return \redirect()->route('folders.index')->with('success','Folder created successfully.');
     }
 
     /**
@@ -65,8 +65,10 @@ class FolderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Folder $folder)
-    {
-        return view('folders.show',compact('folder'));
+    {   
+        $storage = session('storage');
+        $chart_data = session('chart_data');
+        return view('folders.show',compact('folder','storage','chart_data'));
     }
 
     /**

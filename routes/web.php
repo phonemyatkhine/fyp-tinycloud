@@ -38,6 +38,9 @@ Route::get('/recover',[StoredDataController::class,'recoverIndex'])->name('recov
 Route::post('/recover/{data}',[StoredDataController::class,'recoverOne'])->name('recover.one');
 Route::delete('/recover/{data}',[StoredDataController::class,'recoverDelete'])->name('recover.delete');
 Route::delete('/recover',[StoredDataController::class,'deleteAll'])->name('recover.delete.all');
+
+Route::get('/download/{data}',[StoredDataController::class,'downloadFile'])->name('download');
+
 // Route::resource('/')
 Auth::routes();
 

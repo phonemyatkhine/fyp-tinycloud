@@ -31,6 +31,7 @@
             }
             .col-right {
                 margin-left: 10px;
+                margin-right: -40px;
             }
             .menus {
                 list-style-type: none;
@@ -47,11 +48,15 @@
             .material-icons{
                 display: inline-flex;
                 vertical-align: top;
+                color: #707070;
             }
             .active-menu{
                 color : #2172FF;
                 border-left: 3px solid #2172FF;
                 margin-left:-30px;
+            }
+            .active-menu>a>.material-icons{
+                color : #2172FF;
             }
             .active-menu>a{
                 padding-left:15px;
@@ -59,7 +64,8 @@
             }
             .buy-button {
                 all:unset;
-                position: absolute; bottom: 0; 
+                position: absolute; 
+                bottom: 0; 
                 width: 100%; 
                 height: 50px; 
                 margin-left:-40px;
@@ -177,7 +183,11 @@
 @endsection
 
 @section('content')
+
     <div class="row container-fluid storage-container">
+            @if(empty($storage))
+                <script>window.location = "{{ route('welcome') }}";</script>
+            @endif
         @php 
             $total_space = round($storage->total_space/1048576,2);
             $used_space = round($storage->used_space/1048576,2);
@@ -207,7 +217,7 @@
                                 Dashboard
                             </a>
                         </li>
-                        <li class="{{ request()->is('folders') ? 'active-menu' :  ' ' }}">
+                        <li class="{{ request()->routeIs('folders.index') || request()->routeIs('folders.show') ? 'active-menu' :  ' ' }}">
                             <a href="{{route('folders.index')}}">
                                 <i class="material-icons">
                                     folder_open
@@ -241,7 +251,7 @@
                         </li>
                     </ul>            
                 </div>
-                <div class="col-lg-4 col-right">
+                <div class="col-lg-9 col-right row">
                     @yield('storages-right')
                 </div>
             </div>

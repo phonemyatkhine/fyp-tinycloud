@@ -6,8 +6,8 @@
             Name : <input type="text" name="name"> <br>
             Privacy : 
             <select name="privacy" id="">
-                <option value="private">Private</option>
-                <option value="public">Public</option>
+                <option value="Private">Private</option>
+                <option value="Public">Public</option>
             </select> <br>
             <input type="submit" name="submit" value="Create Folder" id="">
         </form>

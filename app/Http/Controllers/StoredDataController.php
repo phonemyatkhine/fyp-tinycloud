@@ -211,6 +211,22 @@ class StoredDataController extends Controller
         }
         return back()->with('success','All Data Deleted');
     }
+
+    public function downloadFile(StoredData $data) {
+        $conn_id = $this->ftpConnect();
+        $temp = tmpfile();
+        $temp_file = "public/temp/".$data->name;
+        if($this->ftpLogin($conn_id)){
+            ob_start();
+            $result = \ftp_get($conn_id,"php://output",$data->path,FTP_BINARY);
+            $contents = ob_get_contents();
+            Storage::disk('local')->put($data->name,$contents);
+            ob_end_clean();
+            $path = Storage::disk('local')->path($data->name);
+            return response()->download($path)->deleteFileAfterSend();
+        }
+    }
+
     public function raid10Store($request,$storageName,$folder) {
         $file = $request->uploaded_file;
         $ftp_server =  env('FTP_HOST_2');
