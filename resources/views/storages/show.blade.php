@@ -12,12 +12,14 @@
                 margin-left: 80px;
                 border: 1px solid #E0E0E0;
                 border-radius: 10px;
+                height: 95%;
             }
             .storages-right {
                 margin-left: 10px;
                 margin-right:20px;
                 border: 1px solid #E0E0E0;
                 border-radius: 10px;
+                height: 95%;
             }  
             
             .folder-header {
@@ -28,6 +30,7 @@
                 margin-left: 10px;
                 border-right: 1px solid #E0E0E0;
                 color: #707070;
+                height: inherit;
             }
             .col-right {
                 margin-left: 10px;
@@ -92,8 +95,8 @@
                 border-radius: 10px;
             }
             .folder-header {
-            padding-top:20px;
-            color: #212121;
+                padding-top:20px;
+                color: #212121;
             }
             .col-left{
                 border: 1px solid #E0E0E0;
@@ -104,6 +107,7 @@
             }
             .col-right {
                 margin-left: 10px;
+                height: inherit;
             }
             .menus {
                 list-style-type: none;
@@ -132,7 +136,8 @@
             }
             .buy-button {
                 all:unset;
-                position: absolute; bottom: 0; 
+                position: absolute; 
+                bottom: 0; 
                 width: 100%; 
                 height: 50px; 
                 margin-left:-35px;
@@ -149,6 +154,7 @@
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    @if(isset($chart_data))
     <script type="text/javascript">
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
@@ -180,6 +186,7 @@
         chart.draw(data, options);
       }
     </script>
+    @endif
 @endsection
 
 @section('content')
@@ -206,11 +213,11 @@
         </div>
         <div class="col-lg-8 storages-right">
             <h4 class="folder-header">Folders Directory</h4>
-            <div class="container-fluid row">
+            <div class="container-fluid row" style="height: inherit;">
                 <div class="col-lg-3 col-left">
                     <ul class="menus">
                         <li class="{{ request()->is('storages*') ? 'active-menu' :  ' ' }}">
-                            <a href="{{route('storages.index')}}">
+                            <a href="{{route('storage.dashboard')}}">
                                 <i class="material-icons">
                                     dashboard
                                 </i>
@@ -234,7 +241,7 @@
                             </a>
                         </li>
                         <li class="{{ request()->is('teams') ? 'active-menu' :  ' ' }}">
-                            <a href="">
+                            <a href="{{route('teams.index')}}">
                                 <i class="material-icons">
                                     people
                                 </i>
@@ -251,7 +258,7 @@
                         </li>
                     </ul>            
                 </div>
-                <div class="col-lg-9 col-right row">
+                <div class="col-lg-9 col-right">
                     @yield('storages-right')
                 </div>
             </div>

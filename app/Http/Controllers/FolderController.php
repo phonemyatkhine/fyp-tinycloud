@@ -23,7 +23,11 @@ class FolderController extends Controller
     {
         $storage = session('storage');
         $chart_data = session('chart_data');
-        $folders = Folder::where('storage_id',$storage->id)->get();
+        if(isset($storage) && isset($chart_data)){
+            $folders = Folder::where('storage_id',$storage->id)->get();
+        } else {
+            return redirect()->route('storages.index');
+        }
         return view('folders.index',compact('folders','storage','chart_data'));   
     }
 
@@ -35,7 +39,9 @@ class FolderController extends Controller
     public function create(Storage $storage)
     {
         // session(['storage' => $storage]);
-        return view('folders.create');
+        $storage = session('storage');
+        $chart_data = session('chart_data');
+        return view('folders.create',compact('storage','chart_data'));
     }
 
     /**
@@ -66,9 +72,11 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {   
-        $storage = session('storage');
-        $chart_data = session('chart_data');
-        return view('folders.show',compact('folder','storage','chart_data'));
+        if($this->authorize('view',$folder)) {
+            $storage = session('storage');
+            $chart_data = session('chart_data');
+            return view('folders.show',compact('folder','storage','chart_data'));
+        }     
     }
 
     /**
@@ -79,7 +87,14 @@ class FolderController extends Controller
      */
     public function edit(Folder $folder)
     {
-        return view('folders.edit',compact('folder'));
+        $storage = session('storage');
+        $chart_data = session('chart_data');
+        if(isset($storage) && isset($chart_data)) {
+            return view('folders.edit',compact('folder','storage','chart_data'));
+        } else {
+            return redirect()->route('storages.index');
+        }
+
     }
 
     /**
@@ -91,16 +106,13 @@ class FolderController extends Controller
      */
     public function update(Request $request, Folder $folder)
     {
-        $attributes = $request()->validate([
-            'storage_id' =>  ['required','integer'],
+        $attributes = $request->validate([
             'name'   =>  ['required','string'],
-            'path'  =>  ['required','string'],
             'privacy'   => ['required']
         ]);
-        $folder->storage_id = $attributes['storage_id'];
         $folder->name = $attributes['name'];
-        $folder->path = $attributes['path'];
         $folder->privacy = $attributes['privacy'];
+        $folder->save();
         return \redirect()->route('folders.index')->with('success','Folder created successfully.');
     }
     public function sharedFolders() 
@@ -109,15 +121,12 @@ class FolderController extends Controller
         $storage = session('storage');
         return view('folders.index',compact('chart_data','storage'));
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Folder  $folder
-     * @return \Illuminate\Http\Response
-     */
+    
+
     public function destroy(Folder $folder)
     {
         $folder->delete();
+        return redirect()->back();
     }
     public function indexFoldersOfStorage(Storage $storage)
     {
@@ -127,4 +136,6 @@ class FolderController extends Controller
     {
 
     }
+
+
 }

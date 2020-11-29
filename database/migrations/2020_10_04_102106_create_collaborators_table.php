@@ -17,6 +17,8 @@ class CreateCollaboratorsTable extends Migration
             $table->id();
             $table->foreignId('folder_id');
             $table->foreignId('user_id');
+            $table->boolean('verified');
+            $table->unique('folder_id','user_id');
             $table->timestamps();
         });
         Schema::table('collaborators', function(Blueprint $table) {

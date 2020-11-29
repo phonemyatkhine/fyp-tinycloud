@@ -23,6 +23,12 @@ class Folder extends Model
     public function storage() {
         return $this->belongsTo('App\Models\Storage');
     }
-
+    public function user() {
+        $storage = $this->storage;
+        return $storage->user();
+    }
+    public function collaborators() {
+        return $this->hasMany('App\Models\Collaborators');
+    }
 
 }

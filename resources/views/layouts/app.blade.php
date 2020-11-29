@@ -93,6 +93,8 @@
               border: 0px;
            }
            .footer {
+            /* width: 100%; 
+            height: 50px;  */
             padding-left:80px;
             color: #757575;
            }
@@ -140,6 +142,12 @@
                             @if(request()->is('storages*')) 
                                 <span class="nav-underline"> Storages </span> 
                             @else Storages
+                            @endif
+                        </a>
+                        <a class="nav-item nav-link {{ request()->is('teams*') ? ' active' :  ' ' }}" href="{{route('teams.index')}}">
+                            @if(request()->is('teams*')) 
+                                <span class="nav-underline"> Teams </span> 
+                            @else Teams
                             @endif
                         </a>
                         <a class="nav-item nav-link" href="#">Help</a>

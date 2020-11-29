@@ -33,16 +33,27 @@
         height:40px;
         width:40px;
         margin:10px 0px 10px 10px; 
+        float: right;
+       }
+       .button-div {
+           /* background-color: black; */
+           height: 10%;
+           display: block;
+           margin-right:25px;
        }
        .card-parent{
            padding-left: 10px;
            overflow-y:scroll;
-           height: 600px;
+           height: 80%;
+           width: 100%;
+           /* background-color: #2172FF; */
+           /* display: block; */
+
        }
     </style>
 @endsection
 @section('storages-right')
-    <div style="align-items: flex-end; float: right;">
+    <div class="button-div">
         <a href="{{route('folders.create')}}" >
             <button class="top-button material-icons">
                 create_new_folder

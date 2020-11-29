@@ -44,5 +44,12 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Storage');
     }
-
+    // public function shared_folders()
+    // {
+    //     $storages = $this->storages();
+    //     $storage
+    // }
+    public function collaborators() {
+        return $this->hasMany('App\Models\Collaborators');
+    }
 }

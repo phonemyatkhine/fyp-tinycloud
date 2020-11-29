@@ -58,7 +58,7 @@ class StorageController extends Controller
     {
         static $stored_data;
         $user = Auth::user();
-        if($user->can('view',$storage)) {
+        if($this->authorize('view',$storage)) {
             session(['storage'=>$storage]);
             // dd(session('storage'));
             $folders = $storage->folders;
@@ -151,5 +151,9 @@ class StorageController extends Controller
         }
         return $storages;
     }
-
+    public function storageDashboard(){
+        $storage = session('storage');
+        $chart_data = session('chart_data');
+        return view('storages.dashboard',compact('storage','chart_data'));
+    }
 }

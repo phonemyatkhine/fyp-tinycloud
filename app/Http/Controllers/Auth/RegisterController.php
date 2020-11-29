@@ -82,13 +82,6 @@ class RegisterController extends Controller
             'type' => 'primary',
             'path' => $storagePath,
         ]);
-        Storage::create([
-            'user_id' => $user->id,
-            'total_space' => 1073741824,
-            'used_space' => 0,
-            'type' => 'backup',
-            'path' => $storagePath,
-        ]);
         return $user;
     }
 }
