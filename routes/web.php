@@ -75,3 +75,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/terms-and-conditions',function(){
+    return view('terms-and-conditions');
+})->name('terms-and-conditions');
+
+Route::get('/privacy-policy',function(){
+    return view('privacy-policy');
+})->name('privacy-policy');

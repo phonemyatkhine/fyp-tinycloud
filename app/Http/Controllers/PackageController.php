@@ -95,7 +95,7 @@ class PackageController extends Controller
             $storage = Auth::user()->storages;
             $storage =$storage[0];
             $current_storage_package = StoragePackage::where('storage_id',$storage->id)->first();
-            if($current_storage_package->updated_date >= date("Y-m-d")) {
+            if($current_storage_package && $current_storage_package->updated_date >= date("Y-m-d")) {
                 return redirect()->route('packages.index')->with('warning','You can only buy one package each month');
             }
             $storage_package = New StoragePackage;

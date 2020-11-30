@@ -63,7 +63,7 @@
                     <h3>$ {{$package->price}} /month</h3>
                     <p>{{$package->details}}</p>
                     <ul> Includes
-                        <li>{{$package->additional_space/1048576}} GB of Addtional Space</li>
+                        <li>{{round($package->additional_space/1073741274,2)}} GB of Addtional Space</li>
                         <li>More features to be added in later versions.</li>
                     </ul>
                     <a href="{{route('package.buy',$package->id)}}">

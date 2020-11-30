@@ -15,7 +15,7 @@
             <p style="width:60%;">
                 {{$data->name}}
             </p>
-            <p style="width: 10%">
+            <p style="width: 15%; background-color:white; padding-left:10px;">
                 {{round($data->size/1048576,2)}} MB
             </p>
             <form action="{{route('recover.one',$data->id)}}" method="POST">

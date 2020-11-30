@@ -197,8 +197,8 @@
         </div>
         {{-- content --}}
         <footer class="container-fluid row footer">
-            <p class="footer-item">Terms and Conditions</p>
-            <p class="footer-item">Privacy Policy</p>
+            <p class="footer-item"><a href="{{route('terms-and-conditions')}}">Terms and Conditions</a></p>
+            <p class="footer-item"><a href="{{route('privacy-policy')}}">Privacy Policy</a></p>
         </footer>
     </body>
 </html>
