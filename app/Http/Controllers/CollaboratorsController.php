@@ -125,4 +125,11 @@ class CollaboratorsController extends Controller
         $collaborator->delete();
         return redirect()->route('folders.show.collaborators.index',$collaborator->folder_id);
     }
+
+    public function acceptPending(Collaborators $collaborator) 
+    {
+        $collaborator->verified = true;
+        $collaborator->save();
+        return redirect()->route('folders.shared',$collaborator->folder_id);
+    } 
 }

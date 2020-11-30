@@ -45,9 +45,10 @@ class StoredDataController extends Controller
         $file = $request->uploaded_file;
         $folder = Folder::find($request->folder_id);
         $name = $request->uploaded_file->getClientOriginalName();
-        // dd(session('storage'));
-        $storageName = session('storage')->path;
-        $storage = session('storage');
+        // $storageName = session('storage')->path;
+        $storageName = $folder->storage->path;
+        // dd($storageName);
+        $storage = $folder->storage;
         //eloquent model for data
         $data = new StoredData;
         $data->folder_id = $folder->id;
@@ -86,6 +87,15 @@ class StoredDataController extends Controller
                 dd("Couldn't connect as $ftp_user\n");
             }
             $data->save();
+            session(['storage'=>$storage]);
+            $free_space = $storage->total_space - $storage->used_space;
+            $chart_data =[
+                ['Space','Number'],
+                ['Free Space in MB' , round($free_space/1048576,2)],
+                ['Used Space in MB' , round($storage->used_space/1048576,2)]
+            ];
+            $chart_data = json_encode($chart_data);
+            session(['chart_data'=>$chart_data]);
             return redirect()->route('folders.show',$folder->id);
         }
     }
@@ -188,6 +198,15 @@ class StoredDataController extends Controller
             $storage->save();
             $data->forceDelete();
         }
+        session(['storage'=>$storage]);
+        $free_space = $storage->total_space - $storage->used_space;
+        $chart_data =[
+            ['Space','Number'],
+            ['Free Space in MB' , round($free_space/1048576,2)],
+            ['Used Space in MB' , round($storage->used_space/1048576,2)]
+        ];
+        $chart_data = json_encode($chart_data);
+        session(['chart_data'=>$chart_data]);
         return back()->with('success','Data Deleted');
 
     }
@@ -209,6 +228,15 @@ class StoredDataController extends Controller
                 }
             }
         }
+        session(['storage'=>$storage]);
+        $free_space = $storage->total_space - $storage->used_space;
+        $chart_data =[
+            ['Space','Number'],
+            ['Free Space in MB' , round($free_space/1048576,2)],
+            ['Used Space in MB' , round($storage->used_space/1048576,2)]
+        ];
+        $chart_data = json_encode($chart_data);
+        session(['chart_data'=>$chart_data]);
         return back()->with('success','All Data Deleted');
     }
 

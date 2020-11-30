@@ -72,7 +72,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder)
     {   
-        if($this->authorize('view',$folder)) {
+        if($this->authorize('viewOrCollab',$folder)) {
             $storage = session('storage');
             $chart_data = session('chart_data');
             return view('folders.show',compact('folder','storage','chart_data'));
@@ -115,11 +115,23 @@ class FolderController extends Controller
         $folder->save();
         return \redirect()->route('folders.index')->with('success','Folder created successfully.');
     }
+
     public function sharedFolders() 
     {
         $chart_data = session('chart_data');
         $storage = session('storage');
-        return view('folders.index',compact('chart_data','storage'));
+        $user = Auth::user();
+        $pending_collabs = $user->pendingSharedFolders();
+        $shared_collabs = $user->getSharedFolders();
+        // $pending_folders = [];
+        $shared_folders = [];
+        // foreach ($pending_collabs as $pending_collab) {
+        //     $pending_folders[] = $pending_collab->folder;
+        // }
+        foreach ($shared_collabs as $shared_collab) {
+            $shared_folders[] = $shared_collab->folder;
+        }
+        return view('folders.index',compact('chart_data','storage','shared_folders','pending_collabs'));
     }
     
 
@@ -136,6 +148,6 @@ class FolderController extends Controller
     {
 
     }
-
+   
 
 }

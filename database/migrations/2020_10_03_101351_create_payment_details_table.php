@@ -16,10 +16,10 @@ class CreatePaymentDetailsTable extends Migration
         Schema::create('payment_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('card_type');
-            $table->string('card_no');
-            $table->integer('postal_code');
-            $table->string('country');
+            $table->string('card_type')->nullable();
+            $table->string('card_no')->nullable();
+            $table->integer('postal_code')->nullable();
+            $table->string('country')->nullable();
             $table->timestamps();
         });
         Schema::table('payment_details',function (Blueprint $table){

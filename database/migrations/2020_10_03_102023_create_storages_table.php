@@ -16,8 +16,8 @@ class CreateStoragesTable extends Migration
         Schema::create('storages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->integer('total_space');
-            $table->integer('used_space');
+            $table->bigInteger('total_space');
+            $table->bigInteger('used_space');
             $table->string('type');
             $table->string('path');
             $table->timestamps();

@@ -17,7 +17,7 @@ class CreatePaymentRecordsTable extends Migration
             $table->id();
             $table->foreignId('payment_details_id');
             $table->foreignId('package_id');
-            $table->integer('amount');
+            $table->float('amount');
             $table->date('paid_date');
             $table->timestamps();
         });

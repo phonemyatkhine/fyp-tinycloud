@@ -7,6 +7,7 @@
             height:40px;
             width:40px;
             margin:10px 0px 10px 10px; 
+            padding: 7px 5px 5px 7px;
             float: right;
         }
         .top-button-div {
@@ -39,33 +40,64 @@
             padding: 20px;
         }
     </style>
+    <script>
+        function copy() {
+
+        var shareable_link = document.getElementById("shareable_link");
+        var privacy = document.getElementById("folder-privacy").value;
+
+            if(privacy == "Private") {
+                alert("Change your folder to public to share!");
+            } else {
+                shareable_link.setAttribute('type','text');
+            shareable_link.select();
+            // shareable_link.setSelectionRange(0, 99999); /*For mobile devices*/
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+            shareable_link.setAttribute('type','hidden');
+            alert("Copied sharable link!");
+            }
+            
+        }
+    </script>
 @endsection
 @section('storages-right')
 <div>
-    <div class="top-button-div">
-        <button  class="top-button material-icons"  data-toggle="modal" data-target="#infoModal">
-            info
-        </button>
-        <button type="button" class="top-button material-icons" data-toggle="modal" data-target="#deleteModal">
-            delete_forever
-        </button>
-        <a href="{{route('folders.edit',$folder->id)}}" >
-            <button class="top-button material-icons">
-                edit
+    @if (Auth::user()->can('view',$folder))   
+        <div class="top-button-div">
+            <button  class="top-button material-icons"  data-toggle="modal" data-target="#infoModal">
+                info
             </button>
-        </a> 
-        <a  href="{{route('folders.show.collaborators.create',$folder->id)}}">
-            <button  class="top-button material-icons">
-                person_add
+            <button type="button" class="top-button material-icons" data-toggle="modal" data-target="#deleteModal">
+                delete_forever
             </button>
-        </a>
-        <a href="{{route('folders.show.collaborators.index',$folder->id)}}">
-            <button  class="top-button material-icons">
-                group
+            <a href="{{route('folders.edit',$folder->id)}}" >
+                <button class="top-button material-icons">
+                    edit
+                </button>
+            </a> 
+            <a  href="{{route('folders.show.collaborators.create',$folder->id)}}">
+                <button  class="top-button material-icons">
+                    person_add
+                </button>
+            </a>
+            <a href="{{route('folders.show.collaborators.index',$folder->id)}}">
+                <button  class="top-button material-icons">
+                    group
+                </button>
+            </a>
+            @php
+                $path = explode('/', $folder->path);
+            @endphp
+            <button  class="top-button material-icons" onclick="copy()">
+                <input type="hidden" value="{{route('folders.share',[$path[0],$path[1]])}}" id="shareable_link" >
+                share
             </button>
-        </a>
-    </div>
-
+            </a>
+        </div>
+    @endif
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -124,6 +156,12 @@
                     </button>
                     <p style="width:80%;">This button will permanently delete your folder.</p>
                 </div>
+                <div>
+                    <button class="material-icons modal-button" disabled>
+                        share
+                    </button>
+                    <p style="width:80%;">This button enables you to get public shareable link to your folder.</p>
+                </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>  
@@ -143,8 +181,11 @@
         <h5 style="color: #2172FF;">Folder Name : {{$folder->name}} </h5>
         <div class="folder-contents">
             <p>Items : {{count($folder->stored_data)}}</p>
+            <input type="hidden" name="" id="folder-privacy" value="{{$folder->privacy}}">
             <p>Privacy : {{$folder->privacy}}</p>
             <p>Folder size : {{$size}} MB</p>
+            <p>Owner : {{$folder->user->name}}</p>
+            <p>Owner Email : {{$folder->user->email}}</p>
             Items :
             <div class="items">
                 @foreach ($folder->stored_data as $key => $data)
@@ -170,7 +211,7 @@
         <form action="{{route('data.store')}}" method="post" enctype="multipart/form-data" style="padding-bottom: 50px;">
             @csrf
             <div class="form-group row">
-                <input type="file" name="uploaded_file" class="col-sm-6 form-control-file">
+                <input type="file" name="uploaded_file" class="col-sm-6 form-control-file" required>
                 <input type="hidden" name="folder_id" value="{{$folder->id}}">
             </div>
             <input type="submit" name="" value="Upload" class="btn btn-primary">

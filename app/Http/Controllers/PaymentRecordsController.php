@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentRecords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentRecordsController extends Controller
 {
@@ -14,7 +15,10 @@ class PaymentRecordsController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        $payment_details = $user->payment_details;
+        $payment_records = PaymentRecords::where('payment_details_id',$payment_details->id)->get();
+        return view('payments.index',compact('payment_records'));
     }
 
     /**

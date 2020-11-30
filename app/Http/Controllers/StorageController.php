@@ -75,7 +75,7 @@ class StorageController extends Controller
             session(['chart_data'=>$chart_data]);
             // return($chart_data);
             // dd($stored_data);
-            return view('storages.show',compact('storage','chart_data'));
+            return view('storages.dashboard',compact('storage','chart_data'));
         } else {
             dd("dont view");
         }
@@ -154,6 +154,6 @@ class StorageController extends Controller
     public function storageDashboard(){
         $storage = session('storage');
         $chart_data = session('chart_data');
-        return view('storages.dashboard',compact('storage','chart_data'));
+        return view('storages.index',compact('storage','chart_data'));
     }
 }

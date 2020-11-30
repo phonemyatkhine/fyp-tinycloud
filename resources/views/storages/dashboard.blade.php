@@ -7,7 +7,7 @@
         }
         .dashboard-contents-title {
             font-size: 15px;
-            width: 30%;
+            width: 35%;
         }
         .dashboard-contents-value {
             font-size: 15px;
@@ -23,17 +23,16 @@
         <p class="dashboard-contents-value">{{count($storage->folders)}}</p>
     </div>
     <div class="row">
-        <p class="dashboard-contents-title">Total Item</p>
+        <p class="dashboard-contents-title">Total Items</p>
         <p class="dashboard-contents-value">{{count($storage->getStoredData())}}</p>
     </div> 
     <div class="row">
-        <p class="dashboard-contents-title">Shared Folders</p>
-        <p class="dashboard-contents-value">{{count(Auth::user()->collaborators)}}</p>
-
+        <p class="dashboard-contents-title">Accepted Shared Folders</p>
+        <p class="dashboard-contents-value">{{count(Auth::user()->getSharedFolders())}}</p>
     </div> 
     <div class="row">
-        <p class="dashboard-contents-title">Teams</p>
-        <p class="dashboard-contents-value"> A</p>
+        <p class="dashboard-contents-title">Pending Shared Folders</p>
+        <p class="dashboard-contents-value">{{count(Auth::user()->pendingSharedFolders())}}</p>
     </div>
 </div>
 @endsection

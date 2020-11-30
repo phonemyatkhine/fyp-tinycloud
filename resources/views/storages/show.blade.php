@@ -152,7 +152,6 @@
         }
        
     </style>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     @if(isset($chart_data))
     <script type="text/javascript">
@@ -207,7 +206,7 @@
                 <p>Storage Used Space :  {{$used_space}} MB</p>
                 <p>Storage Free Space : {{$total_space-$used_space}} MB</p>
                 <button class="buy-button"> 
-                    <a href="{{route('home')}}">Buy More Storage</a>
+                    <a href="{{route('packages.index')}}">Buy More Storage</a>
                 </button>
             </div>
         </div>
@@ -217,14 +216,14 @@
                 <div class="col-lg-3 col-left">
                     <ul class="menus">
                         <li class="{{ request()->is('storages*') ? 'active-menu' :  ' ' }}">
-                            <a href="{{route('storage.dashboard')}}">
+                            <a href="{{route('storages.index')}}">
                                 <i class="material-icons">
                                     dashboard
                                 </i>
                                 Dashboard
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('folders.index') || request()->routeIs('folders.show') ? 'active-menu' :  ' ' }}">
+                        <li class="{{ request()->routeIs('folders.index') ? 'active-menu' :  ' ' }}">
                             <a href="{{route('folders.index')}}">
                                 <i class="material-icons">
                                     folder_open
@@ -238,14 +237,6 @@
                                     folder_shared
                                 </i>
                                 Shared Folders
-                            </a>
-                        </li>
-                        <li class="{{ request()->is('teams') ? 'active-menu' :  ' ' }}">
-                            <a href="{{route('teams.index')}}">
-                                <i class="material-icons">
-                                    people
-                                </i>
-                                Your Teams
                             </a>
                         </li>
                         <li class="{{ request()->is('recover*') ? 'active-menu' :  ' ' }}">

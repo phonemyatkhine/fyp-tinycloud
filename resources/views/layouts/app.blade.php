@@ -10,6 +10,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js">
         <!-- Styles -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -144,10 +145,10 @@
                             @else Storages
                             @endif
                         </a>
-                        <a class="nav-item nav-link {{ request()->is('teams*') ? ' active' :  ' ' }}" href="{{route('teams.index')}}">
-                            @if(request()->is('teams*')) 
-                                <span class="nav-underline"> Teams </span> 
-                            @else Teams
+                        <a class="nav-item nav-link {{ request()->is('packages*') ? ' active' :  ' ' }}" href="{{route('packages.index')}}">
+                            @if(request()->is('packages')) 
+                                <span class="nav-underline"> Packages </span> 
+                            @else Packages
                             @endif
                         </a>
                         <a class="nav-item nav-link" href="#">Help</a>
@@ -159,7 +160,12 @@
                             @endif
                         </a>
                         <a class="nav-item nav-link" href="#">Features</a>
-                        <a class="nav-item nav-link" href="#">Packages</a>
+                        <a class="nav-item nav-link {{ request()->is('packages*') ? ' active' :  ' ' }}" href="{{route('packages.index')}}">
+                            @if(request()->is('packages')) 
+                                <span class="nav-underline"> Packages </span> 
+                            @else Packages
+                            @endif
+                        </a>
                         <a class="nav-item nav-link" href="#">About</a> 
                         <a href="{{route('login')}}" class="nav-item nav-link">Login</a>
                     @endif 
@@ -170,7 +176,8 @@
                       {{Auth::user()->email}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{{route('profile')}}">Profile</a>
+                        <a class="dropdown-item" href="{{route('payment.index')}}">Payment Records</a>
                         <form action="{{route('logout')}}" class="dropdown-item" method="POST">
                             @csrf
                             <input type="submit" name="" id="" value="Logout" style="all: unset">

@@ -33,6 +33,22 @@ class FolderPolicy
         return $user->id === $folder->user->id;
     }
 
+    public function viewCollab(User $user, Folder $folder)
+    {
+        $collaborators = $folder->collaborators;
+        foreach ($collaborators as $collaborator) {
+            return $user->id == $collaborator->user_id;
+        }
+    }
+
+    public function viewOrCollab(User $user,Folder $folder)
+    {
+        if( $this->view($user,$folder) || $this->viewCollab($user,$folder)) {
+            return true;
+        }
+       
+    }
+
     /**
      * Determine whether the user can create models.
      *

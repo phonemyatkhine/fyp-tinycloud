@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Storage;
+use App\Models\PaymentDetails;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -82,6 +83,10 @@ class RegisterController extends Controller
             'type' => 'primary',
             'path' => $storagePath,
         ]);
+        PaymentDetails::create([
+            'user_id' => $user->id,
+        ]);
+
         return $user;
     }
 }
